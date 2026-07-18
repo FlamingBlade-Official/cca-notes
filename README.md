@@ -1,7 +1,7 @@
 # CCA Informatics & Competitive Programming
 
 FIS International School, Singapore  
-**Co-founded by:** FlamingBlade & Shi Xuanjie  
+**Co-founded by:** FlamingBlade & jager59  
 **Schedule:** Every Thursday & Friday, 4:00 PM – 6:00 PM  
 **Starting:** July 23, 2025  
 **Language:** C++
@@ -63,35 +63,6 @@ Each study guide includes:
 - ⚠️ Common pitfalls
 
 Rendered natively on GitHub with `<details>` collapsible sections — just like Codeforces editorials.
-
----
-
-## Lesson Roadmap
-
-### Foundation Track
-
-| Week | Topic |
-|------|-------|
-| 1 | Environment setup + first program |
-| 2 | Variables & data types |
-| 3 | Conditionals (`if`/`else`, `switch`) |
-| 4 | Loops I (`for`, `while`) |
-| 5 | Loops II (nested loops, patterns) |
-| 6 | Arrays I (1D, traversal, min/max) |
-| 7 | Arrays II (2D, matrix operations) |
-| 8 | Strings |
-| 9 | Functions |
-| 10 | Review + mock contest |
-
-### Acceleration Track
-
-| Week | Topic |
-|------|-------|
-| 1–2 | STL containers (`vector`, `set`, `map`, `stack`, `queue`) |
-| 3–4 | Sorting & binary search |
-| 5–6 | Number theory (sieve, gcd/lcm, fast exponentiation) |
-| 7–8 | Greedy algorithms |
-| 9–10 | Basic DP (knapsack, LIS) |
 
 ---
 
