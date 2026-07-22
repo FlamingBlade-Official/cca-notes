@@ -199,7 +199,7 @@ if (condition) {
 | Operator | Meaning | Example |
 |----------|---------|---------|
 | `&&` | AND | `x > 0 && x < 100` — $x$ must be in $(0, 100)$ |
-| `\|\|` | OR | `c == 'Y' \|\| c == 'y'` — $c$ is either uppercase or lowercase $y$ |
+| `||` | OR | `c == 'Y' || c == 'y'` — $c$ is either uppercase or lowercase $y$ |
 | `!` | NOT | `if (!done)` means `done == false` |
 
 ### Short-Circuit Evaluation
@@ -591,6 +591,7 @@ void printArray(int a[], int n) {  // array parameter + size parameter
 int main() {
     int arr[] = {1, 2, 3, 4, 5};
     printArray(arr, 5);
+    return 0;
 }
 ```
 
@@ -620,6 +621,7 @@ int main() {
     s1.score = 95.5;
 
     cout << s1.name << " scored " << s1.score << endl;
+    return 0;
 }
 ```
 
@@ -700,14 +702,14 @@ Structs may have padding bytes inserted between members in memory. `sizeof(Struc
 
 ## Practice Problems
 
-### P1 [CSP-J 2019] Number Game (P5660) [P5660 Number Game](https://www.luogu.com.cn/problem/P5660)
+### P1 [ABC081A] Placing Marbles（[AtCoder](https://atcoder.jp/contests/abc081/tasks/abc081_a)）
 
-> Given an 8-character string of 0s and 1s, count how many `1`s there are.
+> Given a 3-character string consisting of `0`s and `1`s (e.g., `101`), count how many `1`s there are.
 
 <details>
 <summary>Hint</summary>
 
-Traverse each character of the string. Every time you see `'1'`, increment a counter. The string length is always 8, so a `for` loop from 0 to 7 works.
+The string length is always 3. Loop through the 3 characters. Every time you see `'1'`, increment a counter.
 
 </details>
 
@@ -723,7 +725,7 @@ int main() {
     string s;
     cin >> s;
     int cnt = 0;
-    for (int i = 0; i < s.size(); i++)
+    for (int i = 0; i < 3; i++)
         if (s[i] == '1') cnt++;
     cout << cnt << endl;
     return 0;
@@ -732,14 +734,14 @@ int main() {
 
 </details>
 
-### P2 [NOIP 2005 Popularization] Tao Tao Picking Apples (P1046) [P1046 Tao Tao Picking Apples](https://www.luogu.com.cn/problem/P1046)
+### P2 [CF 158A] Next Round（[Codeforces](https://codeforces.com/problemset/problem/158/A)）
 
-> 10 apple heights + Tao Tao's maximum reach height. With a 30cm stool, how many apples can she reach?
+> $n$ contestants' scores are given in non-increasing order. The $k$-th contestant's score is the advancement threshold. A contestant advances if their score $> 0$ and $\ge$ the threshold. Output the number of advancers.
 
 <details>
 <summary>Hint</summary>
 
-Tao Tao's maximum reach = her height + 30. Loop through the 10 apples; if apple height ≤ max reach, increment the counter.
+Read $n, k$, then read $n$ scores into an array. Set `threshold = a[k-1]` (note: array indices start at 0). Loop through the array: if `a[i] > 0 && a[i] >= threshold`, increment the counter.
 
 </details>
 
@@ -751,13 +753,13 @@ Tao Tao's maximum reach = her height + 30. Loop through the 10 apples; if apple 
 using namespace std;
 
 int main() {
-    int a[10];
-    for (int i = 0; i < 10; i++) cin >> a[i];
-    int h;
-    cin >> h;
-    int cnt = 0;
-    for (int i = 0; i < 10; i++)
-        if (a[i] <= h + 30) cnt++;
+    int n, k;
+    cin >> n >> k;
+    int a[55];
+    for (int i = 0; i < n; i++) cin >> a[i];
+    int threshold = a[k - 1], cnt = 0;
+    for (int i = 0; i < n; i++)
+        if (a[i] > 0 && a[i] >= threshold) cnt++;
     cout << cnt << endl;
     return 0;
 }
@@ -765,14 +767,14 @@ int main() {
 
 </details>
 
-### P3 [NOIP 2004 Improvement] Jinjin's Savings Plan (P1089) [P1089 Jinjin's Savings Plan](https://www.luogu.com.cn/problem/P1089)
+### P3 [CF 122A] Lucky Division（[Codeforces](https://codeforces.com/problemset/problem/122/A)）
 
-> Each month, Mom gives 300 yuan. Jinjin budgets 12 months of expenses. If any month runs out of money, print `-month`. Otherwise, at year's end, print total savings + 20% interest.
+> A number is called "lucky" if every digit is 4 or 7. Given $n$ ($1 \le n \le 1000$), determine whether $n$ is divisible by **any** lucky number.
 
 <details>
 <summary>Hint</summary>
 
-Simulate all 12 months: each month, add 300, subtract the budget. If balance < 0, immediately print `-month` and exit. Otherwise, deposit whole hundreds (`saved += balance / 100 * 100`), and keep only the remainder (`balance %= 100`). At year's end, output `balance + saved * 1.2`.
+This problem **naturally calls for a function** — `bool isLucky(int x)` to check whether every digit of $x$ is 4 or 7. Then enumerate lucky numbers in $[4, n]$: if `isLucky(i)` is true and `n % i == 0`, print `"YES"`. If nothing is found after the loop, print `"NO"`.
 
 </details>
 
@@ -783,34 +785,41 @@ Simulate all 12 months: each month, add 300, subtract the budget. If balance < 0
 #include <iostream>
 using namespace std;
 
+bool isLucky(int x) {
+    while (x > 0) {
+        int d = x % 10;
+        if (d != 4 && d != 7) return false;
+        x /= 10;
+    }
+    return true;
+}
+
 int main() {
-    int budget, balance = 0, saved = 0;
-    for (int month = 1; month <= 12; month++) {
-        cin >> budget;
-        balance += 300;
-        if (balance < budget) {
-            cout << -month << endl;
+    int n;
+    cin >> n;
+    for (int i = 4; i <= n; i++) {
+        if (n % i == 0 && isLucky(i)) {
+            cout << "YES" << endl;
             return 0;
         }
-        balance -= budget;
-        saved += balance / 100 * 100;
-        balance %= 100;
     }
-    cout << balance + saved * 1.2 << endl;
+    cout << "NO" << endl;
     return 0;
 }
 ```
 
 </details>
 
-### P4 [NOIP 2013 Popularization] Counting Problem (P1980) [P1980 Counting Problem](https://www.luogu.com.cn/problem/P1980)
+### P4 [P5740] The Best Student（[Luogu](https://www.luogu.com.cn/problem/P5740)）
 
-> Count how many times digit $x$ appears in all integers from $1$ to $n$. $n \le 10^6$.
+> Input $N$ students' names, Chinese, Math, and English scores. Output the student with the highest total score (in case of a tie, output the one that appeared first). $N \le 1000$.
 
 <details>
 <summary>Hint</summary>
 
-Loop from $1$ to $n$. For each number, break it down digit by digit: `while (t > 0) { if (t % 10 == x) cnt++; t /= 10; }`. Note that $x$ could be 0, but leading digits of a number are never 0 — and we're only counting $1 \sim n$, so no leading-zero issue arises.
+Define `struct Student { string name; int ch, ma, en; };`. Read each student, compute the total score. Maintain a `best` struct and `bestTotal`. While traversing, if the current total $>$ `bestTotal`, update both.
+
+This problem is the most direct application of section 0x08 on structs — a student is naturally a struct.
 
 </details>
 
@@ -819,19 +828,29 @@ Loop from $1$ to $n$. For each number, break it down digit by digit: `while (t >
 
 ```cpp
 #include <iostream>
+#include <string>
 using namespace std;
 
+struct Student {
+    string name;
+    int ch, ma, en;
+};
+
 int main() {
-    int n, x, cnt = 0;
-    cin >> n >> x;
-    for (int i = 1; i <= n; i++) {
-        int t = i;
-        while (t > 0) {
-            if (t % 10 == x) cnt++;
-            t /= 10;
+    int n;
+    cin >> n;
+    Student best;
+    int bestTotal = -1;
+    for (int i = 0; i < n; i++) {
+        Student s;
+        cin >> s.name >> s.ch >> s.ma >> s.en;
+        int total = s.ch + s.ma + s.en;
+        if (total > bestTotal) {
+            bestTotal = total;
+            best = s;
         }
     }
-    cout << cnt << endl;
+    cout << best.name << " " << best.ch << " " << best.ma << " " << best.en << endl;
     return 0;
 }
 ```

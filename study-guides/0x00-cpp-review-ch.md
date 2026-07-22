@@ -590,6 +590,7 @@ void printArray(int a[], int n) {  // 数组参数 + 大小参数
 int main() {
     int arr[] = {1, 2, 3, 4, 5};
     printArray(arr, 5);
+    return 0;
 }
 ```
 
@@ -619,6 +620,7 @@ int main() {
     s1.score = 95.5;
 
     cout << s1.name << " scored " << s1.score << endl;
+    return 0;
 }
 ```
 
@@ -699,14 +701,14 @@ if (a == b) { /* 编译错误！结构体不能直接用 == */ }
 
 ## 练习题
 
-### P1 [CSP-J 2019] 数字游戏（P5660）[P5660 数字游戏](https://www.luogu.com.cn/problem/P5660)
+### P1 [ABC081A] Placing Marbles（[AtCoder](https://atcoder.jp/contests/abc081/tasks/abc081_a)）
 
-> 给定一个长度为 8 的 01 字符串，统计其中字符 `1` 的个数。
+> 给定一个长度为 3 的字符串，由 `0` 和 `1` 组成（如 `101`），统计其中字符 `1` 的个数。
 
 <details>
 <summary>Hint</summary>
 
-遍历字符串的每个字符，遇到 `'1'` 就计数 +1。字符串长度固定为 8，`for` 循环从 0 到 7 即可。
+字符串长度固定为 3。遍历 3 个字符，遇到 `'1'` 就计数 +1。
 
 </details>
 
@@ -722,7 +724,7 @@ int main() {
     string s;
     cin >> s;
     int cnt = 0;
-    for (int i = 0; i < s.size(); i++)
+    for (int i = 0; i < 3; i++)
         if (s[i] == '1') cnt++;
     cout << cnt << endl;
     return 0;
@@ -731,14 +733,14 @@ int main() {
 
 </details>
 
-### P2 [NOIP 2005 普及组] 陶陶摘苹果（P1046）[P1046 陶陶摘苹果](https://www.luogu.com.cn/problem/P1046)
+### P2 [CF 158A] Next Round（[Codeforces](https://codeforces.com/problemset/problem/158/A)）
 
-> 10 个苹果的高度 + 陶陶伸手的最大高度。踩 30cm 板凳，问能摘到几个。
+> $n$ 个选手的分数（非递增排列），第 $k$ 名选手的分数是晋级线。晋级条件：分数 $>0$ 且分数 $\ge$ 晋级线。问有多少人晋级。
 
 <details>
 <summary>Hint</summary>
 
-陶陶能摘到的最大高度 = 伸手高度 + 30。遍历 10 个苹果，如果苹果高度 ≤ 最大高度，计数 +1。
+读入 $n,k$，读入 $n$ 个分数到数组。设 `threshold = a[k-1]`（注意数组下标从 0 开始）。遍历数组，如果 `a[i] > 0 && a[i] >= threshold`，计数 +1。
 
 </details>
 
@@ -750,13 +752,13 @@ int main() {
 using namespace std;
 
 int main() {
-    int a[10];
-    for (int i = 0; i < 10; i++) cin >> a[i];
-    int h;
-    cin >> h;
-    int cnt = 0;
-    for (int i = 0; i < 10; i++)
-        if (a[i] <= h + 30) cnt++;
+    int n, k;
+    cin >> n >> k;
+    int a[55];
+    for (int i = 0; i < n; i++) cin >> a[i];
+    int threshold = a[k - 1], cnt = 0;
+    for (int i = 0; i < n; i++)
+        if (a[i] > 0 && a[i] >= threshold) cnt++;
     cout << cnt << endl;
     return 0;
 }
@@ -764,14 +766,14 @@ int main() {
 
 </details>
 
-### P3 [NOIP 2004 提高组] 津津的储蓄计划（P1089）[P1089 津津的储蓄计划](https://www.luogu.com.cn/problem/P1089)
+### P3 [CF 122A] Lucky Division（[Codeforces](https://codeforces.com/problemset/problem/122/A)）
 
-> 每月月初妈妈给 300 元。津津预算 12 个月的花销，如果某月钱不够就输出 `-月份`；否则年末输出总存款 + 20% 利息。
+> 如果一个数每一位都是 4 或 7，它叫「幸运数」。给定 $n$（$1 \le n \le 1000$），判断 $n$ 是否能被**任意一个**幸运数整除。
 
 <details>
 <summary>Hint</summary>
 
-模拟 12 个月：每月先收 300，减去预算。如果余额 < 0，立刻输出 `-月份` 并结束。否则，把整百的部分存起来（`saved += balance / 100 * 100`），余额只留零头（`balance %= 100`）。年末输出 `balance + saved * 1.2`。
+这道题**天然需要写一个函数** `bool isLucky(int x)`——判断 $x$ 的每一位是否都是 4 或 7。然后在 $[4, n]$ 范围内枚举幸运数：如果 `isLucky(i)` 为真且 `n % i == 0`，输出 `"YES"`。枚举完都没找到就输出 `"NO"`。
 
 </details>
 
@@ -782,34 +784,41 @@ int main() {
 #include <iostream>
 using namespace std;
 
+bool isLucky(int x) {
+    while (x > 0) {
+        int d = x % 10;
+        if (d != 4 && d != 7) return false;
+        x /= 10;
+    }
+    return true;
+}
+
 int main() {
-    int budget, balance = 0, saved = 0;
-    for (int month = 1; month <= 12; month++) {
-        cin >> budget;
-        balance += 300;
-        if (balance < budget) {
-            cout << -month << endl;
+    int n;
+    cin >> n;
+    for (int i = 4; i <= n; i++) {
+        if (n % i == 0 && isLucky(i)) {
+            cout << "YES" << endl;
             return 0;
         }
-        balance -= budget;
-        saved += balance / 100 * 100;
-        balance %= 100;
     }
-    cout << balance + saved * 1.2 << endl;
+    cout << "NO" << endl;
     return 0;
 }
 ```
 
 </details>
 
-### P4 [NOIP 2013 普及组] 计数问题（P1980）[P1980 计数问题](https://www.luogu.com.cn/problem/P1980)
+### P4 [P5740] 最厉害的学生（[洛谷](https://www.luogu.com.cn/problem/P5740)）
 
-> 统计 $1$ 到 $n$ 的所有整数中，数字 $x$ 出现了多少次。$n \le 10^6$。
+> 输入 $N$ 个学生的姓名、语文、数学、英语成绩，输出总分最高的学生（并列则输出最先输入的那个）。$N \le 1000$。
 
 <details>
 <summary>Hint</summary>
 
-遍历 $1$ 到 $n$，对每个数逐位拆解：`while (t > 0) { if (t % 10 == x) cnt++; t /= 10; }`。注意 $x$ 可能为 0，而数字首位不会是 0——但题目只统计 $1\sim n$，不会有前导零的问题。
+定义 `struct Student { string name; int ch, ma, en; };`。读入每个学生，计算总分。维护一个 `best` 结构体和 `bestTotal`，遍历时如果当前总分 $>$ `bestTotal` 就更新。
+
+这道题是 0x08 结构体最直接的应用——一个学生天然就是一个结构体。
 
 </details>
 
@@ -818,19 +827,29 @@ int main() {
 
 ```cpp
 #include <iostream>
+#include <string>
 using namespace std;
 
+struct Student {
+    string name;
+    int ch, ma, en;
+};
+
 int main() {
-    int n, x, cnt = 0;
-    cin >> n >> x;
-    for (int i = 1; i <= n; i++) {
-        int t = i;
-        while (t > 0) {
-            if (t % 10 == x) cnt++;
-            t /= 10;
+    int n;
+    cin >> n;
+    Student best;
+    int bestTotal = -1;
+    for (int i = 0; i < n; i++) {
+        Student s;
+        cin >> s.name >> s.ch >> s.ma >> s.en;
+        int total = s.ch + s.ma + s.en;
+        if (total > bestTotal) {
+            bestTotal = total;
+            best = s;
         }
     }
-    cout << cnt << endl;
+    cout << best.name << " " << best.ch << " " << best.ma << " " << best.en << endl;
     return 0;
 }
 ```
