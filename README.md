@@ -4,7 +4,6 @@ FIS International School, Singapore
 **Co-founded by:** FlamingBlade & jager59  
 **Schedule:** Every Thursday & Friday, 4:00 PM – 6:00 PM  
 **Starting:** July 24, 2026
-
 **Language:** C++
 
 ---
