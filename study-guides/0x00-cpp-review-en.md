@@ -1009,8 +1009,6 @@ This problem is directly related to section 0x08 on structs, but its difficulty 
 - Implement `.`-separated nested access path resolution
 - Implement address reverse-lookup: determine which element a given address belongs to
 
-> Hint: use `map<string, TypeInfo>` for type info and `map<string, ElementInfo>` for element info. For operation 4 (address lookup), you can maintain an address-to-element-name mapping. Operations 1 and 2 are essentially about computing sizes and offsets according to alignment rules.
-
 > **Suggested approach**: complete P1–P4 first to ensure a solid foundation. If you're eager after reading 0x08, go for P6. P5 is great for those who enjoy astronomy/history simulation. Neither challenge problem affects your ability to study subsequent chapters.
 
 ---
