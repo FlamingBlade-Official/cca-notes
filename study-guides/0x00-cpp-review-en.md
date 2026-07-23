@@ -700,6 +700,135 @@ You must compare each field manually. Once you learn operator overloading, this 
 
 Structs may have padding bytes inserted between members in memory. `sizeof(StructName)` might be slightly larger than the sum of member sizes. Don't worry about this for now — just know it exists. Interested students can try the challenge problem P9754 [CSP-S 2023] on struct alignment.
 
+## 0x09 Complexity Analysis
+
+You know how to write a `for` loop and you've probably guessed that a loop running $N$ times gets slower as $N$ grows. But *how much* slower? And how do you compare two different algorithms without coding both? That's what complexity analysis is for.
+
+After this chapter you'll be able to:
+- read $O(n)$, $O(n^2)$, $O(\log n)$ and understand what they mean
+- estimate whether your solution will run within the time limit (usually 1 second $\approx 10^7{-}10^8$ simple operations)
+- choose the right algorithm for the constraints
+
+---
+
+###  What Is Complexity?
+
+**Time complexity**: how the running time scales with the input size $n$.  
+**Space complexity**: how the memory usage scales with $n$.
+
+We use **Big‑O notation** to describe the *worst‑case* growth rate, ignoring constants and smaller terms.
+
+| Big‑O         | Common name | Max $n$ in 1 s            |
+| ------------- | ----------- | ------------------------- |
+| $O(1)$        | Constant    | any                       |
+| $O(\log n)$   | Logarithmic | huge, e.g. $10^{18}$      |
+| $O(\sqrt{n})$ | Square‑root | $\approx 10^{12}$         |
+| $O(n)$        | Linear      | $10^7$                    |
+| $O(n \log n)$ | Log‑linear  | $5 \times 10^5 \sim 10^6$ |
+| $O(n^2)$      | Quadratic   | $5000$                    |
+| $O(n^3)$      | Cubic       | $500$                     |
+| $O(2^n)$      | Exponential | $20\sim25$                |
+
+> These numbers are rough estimates for C++ on a typical judge. If you have a heavy constant factor (e.g. many divisions, `set` operations, or recursive calls), aim for a lower $n$ to be safe.
+
+---
+
+### How to Analyse Simple Code
+
+**Rule 1: Sequential statements add** – keep the heaviest term.
+
+```cpp
+for (int i = 0; i < n; i++)  // O(n)
+    do_something();
+for (int i = 0; i < m; i++)  // O(m)
+    do_something_else();
+// total: O(n + m)
+```
+
+**Rule 2: Nested loops multiply.**  
+
+```cpp
+for (int i = 0; i < n; i++)       // n times
+    for (int j = 0; j < n; j++)   // n times each
+        do_work();                // O(1) work
+// total: O(n * n) = O(n^2)
+```
+
+**Rule 3: A loop that halves its bound is logarithmic.**  
+
+```cpp
+while (n > 1) {
+    n /= 2;        // how many times can you halve n? log₂ n times
+    do_work();
+}
+// O(log n)
+```
+
+Similarly, loop `i *= 2` while $i < n$ is also $O(\log n)$.
+
+**Rule 4: Library functions have their own complexities.**  
+- `sort(a, a+n)` — $O(n \log n)$
+- `lower_bound` / `upper_bound` on a sorted array — $O(\log n)$
+- `set::insert`, `map::find` — $O(\log n)$
+
+---
+
+### Common Patterns
+
+### Two nested loops with different bounds
+
+```cpp
+for (int i = 0; i < n; i++)
+    for (int j = 0; j < i; j++)   // runs 0+1+2+...+(n-1) = n(n-1)/2 times
+        do_work();
+```
+Still $O(n^2)$, just with a constant factor $\frac{1}{2}$.
+
+### While loop that counts down
+```cpp
+int i = n;
+while (i > 0) {
+    i -= 2;           // n/2 iterations → O(n)
+}
+```
+
+### Nested loop with logarithmic inner
+```cpp
+for (int i = 0; i < n; i++) {
+    int j = 1;
+    while (j < n) {
+        j *= 2;       // log n steps
+        do_work();
+    }
+}
+// O(n log n) — outer runs n times, inner runs log n each time
+```
+
+---
+
+### Space Complexity
+
+Usually we only care about **extra** memory besides the input.
+
+```cpp
+int arr[1000000];          // O(n) space where n ≈ 1e6
+vector<int> dp(n);         // O(n)
+int a, b, cnt = 0;         // O(1) — a few variables
+```
+
+Recursion depth also counts: a recursive function that calls itself $n$ times uses $O(n)$ stack space.
+
+---
+
+### 0x09.5 Why This Matters
+
+Before you start coding a problem, look at the constraints:
+- $n \le  500$: $O(n^3)$ is fine.
+- $n \le 10^6$: you need $O(n \log n)$ or faster.
+- $n \le 10^7$: aim for $O(n)$.
+
+If your planned complexity doesn't match the constraints, **don't start coding** — find a better algorithm first.
+
 ## Practice Problems
 
 ### P1 [ABC081A] Placing Marbles（[AtCoder](https://atcoder.jp/contests/abc081/tasks/abc081_a)）
@@ -916,3 +1045,9 @@ Go through each item — you should be able to answer without hesitation:
 - [ ] Understand nested structs (struct inside struct)
 - [ ] Know that `const &` is the most efficient way to pass structs as parameters
 - [ ] Know that structs can't be compared with `==` directly
+- [ ] I know what $O(1)$, $O(\log n)$, $O(n)$, $O(n^2)$ mean.
+- [ ] I can look at a loop and tell its time complexity.
+- [ ] I can read the constraints and guess whether an $O(n^2)$ solution will pass.
+- [ ] I understand that constants are ignored in Big‑O, but still need to be considered for very small $n$ or heavy operations.
+- [ ] I know that a single `sort` costs $O(n \log n)$.
+- [ ] I know how to estimate space complexity for arrays and recursion.

@@ -23,9 +23,9 @@ This CCA is designed for **complete beginners** with no prior programming experi
 
 | Tool | Purpose |
 |------|---------|
-| **[vjudge](https://vjudge.net)** | Weekly problem sets, auto-judging, leaderboard |
+| **[vjudgeTeam](https://vjudge.net/group/fis-informatics)** | Weekly problem sets, auto-judging, leaderboard |
 | **GitHub (this repo)** | Study guides, resources, code reviews |
-| **Local IDE / Online IDE** | Student's choice — set up before first session |
+| **Local IDE / Online IDE** | Student's choice |
 
 ---
 
@@ -34,35 +34,19 @@ This CCA is designed for **complete beginners** with no prior programming experi
 ```
 cca-notes/
 ├── study-guides/       # Weekly study guides for Acceleration Track
-├── resources/          # Cheat sheets, references, syllabus
+├── resources/          # Weekly challenge problems, editorials, cheat sheets, references
 └── README.md           # You are here
 ```
 
----
+### `resources/` — Weekly Challenges & Solutions
 
-## Weekly Flow
+Each week's folder (e.g. `resources/0x00/`) contains:
+- **Challenge problems** — sourced from online judge, matched to the week's topic
+- **Editorials**
 
-```
-4:00 – 4:10   Joint warm-up problem (both tracks)
-4:10 – 4:15   Acceleration Track: briefing & goals
-4:15 – 5:30   Foundation Track: lesson + practice
-              Acceleration Track: self-study via study guide + mentoring
-5:30 – 5:45   Code review (projection, whole group)
-5:45 – 6:00   Joint wrap-up + next week preview
-```
+### `study-guides/` — Acceleration Track
 
----
-
-## Study Guide Format
-
-Each study guide includes:
-- 📖 Pre-reading
-- 📝 Required problems (with hints in collapsible blocks)
-- 🚀 Challenge problems
-- ✅ Self-check checklist
-- ⚠️ Common pitfalls
-
-Rendered natively on GitHub with `<details>` collapsible sections — just like Codeforces editorials.
+Self-study guides covering theory, patterns, and worked examples. Each guide has a Chinese and English version.
 
 ---
 
