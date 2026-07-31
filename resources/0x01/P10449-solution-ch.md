@@ -7,11 +7,14 @@
 ## Hint 1
 
 <details>
-<summary>对一个灯泡做操作相当于对相邻四个灯泡和这个灯泡做什么操作？从中能得出什么性质？</summary>
+<summary>Hint 1 问题</summary>
+
+对一个灯泡做操作相当于对相邻四个灯泡和这个灯泡做什么操作？从中能得出什么性质？
+
 </details>
 
 <details>
-<summary>答案</summary>
+<summary>Hint 1 答案</summary>
 
 对一个灯泡做操作，相当于把这个灯泡以及其**上下左右**四个邻居的状态**取反**（$0$ 变 $1$，$1$ 变 $0$）。  
 这个操作是**可逆的**：连续对同一个灯泡做两次操作等于什么都不做。  
@@ -24,11 +27,14 @@
 ## Hint 2
 
 <details>
-<summary>一个灯泡会被操作两次吗？为什么？</summary>
+<summary>Hint 2 问题</summary>
+
+一个灯泡会被操作两次吗？为什么？
+
 </details>
 
 <details>
-<summary>答案</summary>
+<summary>Hint 2 答案</summary>
 
 不会。  
 因为同一个灯泡按两次等于没按，按三次有两次无效，不如只按一次。我们只需关心每个灯泡最终按了**奇数次**还是**偶数次**，即按与不按。
@@ -40,11 +46,14 @@
 ## Hint 3
 
 <details>
-<summary>灯泡之间的操作顺序交换会影响结果吗？为什么？</summary>
+<summary>Hint 3 问题</summary>
+
+灯泡之间的操作顺序交换会影响结果吗？为什么？
+
 </details>
 
 <details>
-<summary>答案</summary>
+<summary>Hint 3 答案</summary>
 
 不会。  
 无论你先按哪个后按哪个，每个灯泡最终被翻转的次数只取决于它和它的邻居被按的次数的奇偶性。  
@@ -57,11 +66,14 @@
 ## Hint 4
 
 <details>
-<summary>你是否得出了一个基础的解法？</summary>
+<summary>Hint 4 问题</summary>
+
+你是否得出了一个基础的解法？
+
 </details>
 
 <details>
-<summary>答案</summary>
+<summary>Hint 4 答案</summary>
 
 一个朴素的搜索思路是：  
 1. 枚举每一个灯泡是否被按（$2^{25}$ 种状态），检查能否在 $6$ 步内全亮。  
@@ -76,11 +88,14 @@
 ## Hint 5
 
 <details>
-<summary>这个解法能被优化吗？想一下，我们从上往下操作，上一行的灯泡状态确定了（哪个开，哪个关），那么当前行的状态也能被确定吗？为什么？</summary>
+<summary>Hint 5 问题</summary>
+
+这个解法能被优化吗？想一下，我们从上往下操作，上一行的灯泡状态确定了（哪个开，哪个关），那么当前行的状态也能被确定吗？为什么？
+
 </details>
 
 <details>
-<summary>答案</summary>
+<summary>Hint 5 答案</summary>
 
 可以！  
 固定第一行按法后，从第二行开始，**每一行的按法唯一确定**：为了让上一行的某个灯泡变亮，必须按下它正下方的灯泡（因为上面和左右的已经处理过了）。  
@@ -94,11 +109,14 @@
 ## Hint 6
 
 <details>
-<summary>那我们的最终的解法会是怎么样的？</summary>
+<summary>Hint 6 问题</summary>
+
+那我们的最终的解法会是怎么样的？
+
 </details>
 
 <details>
-<summary>答案</summary>
+<summary>Hint 6 答案</summary>
 
 1. 枚举第一行的所有按法（共 $2^5 = 32$ 种）。  
 2. 对于每种第一行按法，逐行向下模拟：若上一行某列为 $0$，则按当前行对应列的开关。  
@@ -178,33 +196,42 @@ else cout << -1 << endl;
 ## 思考题
 
 <details>
-<summary>Q1. 为什么枚举第一行而不是第一列？如果矩阵是 $n \times m$（$n \neq 5$），这种做法还能推广吗？</summary>
+<summary>Q1 问题</summary>
+
+为什么枚举第一行而不是第一列？如果矩阵是 $n \times m$（$n \neq 5$），这种做法还能推广吗？
+
 </details>
 
 <details>
-<summary>参考答案</summary>
+<summary>Q1 答案</summary>
 
 因为本题是 $5\times5$，行数固定，枚举第一行正好利用「上一行决定下一行」的性质。如果矩阵大小变化，依然可以推广：枚举第一行的 $2^m$ 种按法，然后同样向下递推，复杂度 $O(2^m \cdot n \cdot m)$。当 $m$ 较大时需要用状态压缩或高斯消元等方法。
 
 </details>
 
 <details>
-<summary>Q2. 如果去掉「$6$ 步以内」的限制，只要求任意步数内全亮，回溯枚举第一行的做法是否还能求出最小步数？会不会漏解？</summary>
+<summary>Q2 问题</summary>
+
+如果去掉「$6$ 步以内」的限制，只要求任意步数内全亮，回溯枚举第一行的做法是否还能求出最小步数？会不会漏解？
+
 </details>
 
 <details>
-<summary>参考答案</summary>
+<summary>Q2 答案</summary>
 
 依然可以求出全局最小步数。因为第一行的按法决定了后面的所有按法，而第一行的按法只有 $32$ 种，穷举所有第一行状态即可覆盖所有可能的「不冗余」操作序列。只要解存在，就能找到，并且步数最小。
 
 </details>
 
 <details>
-<summary>Q3. 代码中为什么 `ans` 初始化为 `114514`？如果所有方案步数都大于 $6$，最终输出 $-1$ 的逻辑是否正确？</summary>
+<summary>Q3 问题</summary>
+
+代码中为什么 `ans` 初始化为 `114514`？如果所有方案步数都大于 $6$，最终输出 $-1$ 的逻辑是否正确？
+
 </details>
 
 <details>
-<summary>参考答案</summary>
+<summary>Q3 答案</summary>
 
 `114514` 是一个远大于 $6$ 的哨兵值。如果没有任何方案能使灯全亮，`ans` 保持该值，最后 `ans <= 6` 为假，输出 `-1`。逻辑正确。
 

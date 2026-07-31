@@ -7,11 +7,14 @@
 ## Hint 1
 
 <details>
-<summary>对于每一个运算，他们的每一个二进制位是独立的吗？为什么？</summary>
+<summary>Hint 1 问题</summary>
+
+对于每一个运算，他们的每一个二进制位是独立的吗？为什么？
+
 </details>
 
 <details>
-<summary>答案</summary>
+<summary>Hint 1 答案</summary>
 
 是的。  
 `AND`、`OR`、`XOR` 这三种运算在**二进制下都是按位操作**，位与位之间不存在进位或借位。  
@@ -24,11 +27,14 @@
 ## Hint 2
 
 <details>
-<summary>每一位是独立的，那么我们为了打到最大的攻击伤害，可以做什么？</summary>
+<summary>Hint 2 问题</summary>
+
+每一位是独立的，那么我们为了打到最大的攻击伤害，可以做什么？
+
 </details>
 
 <details>
-<summary>答案</summary>
+<summary>Hint 2 答案</summary>
 
 **从高位到低位贪心**。  
 因为高位上的 $1$ 贡献的伤害远大于所有低位贡献的总和（$2^i > \sum_{j=0}^{i-1} 2^j$），我们应当优先尝试让高位变成 $1$，并且尽可能不消耗 $m$ 的限额。  
@@ -41,11 +47,14 @@
 ## Hint 3
 
 <details>
-<summary>假如说我们想在第 $i$ 位打到 $2^i$ 的伤害，如何知道哪些数是允许的？</summary>
+<summary>Hint 3 问题</summary>
+
+假如说我们想在第 $i$ 位打到 $2^i$ 的伤害，如何知道哪些数是允许的？
+
 </details>
 
 <details>
-<summary>答案</summary>
+<summary>Hint 3 答案</summary>
 
 我们先计算两个"探针值"：  
 - `ans0 = 0`：初始攻击力在第 $i$ 位为 $0$  
@@ -65,11 +74,14 @@
 ## Hint 4
 
 <details>
-<summary>如何高效计算出每个二进制位经过所有门后的最终值？</summary>
+<summary>Hint 4 问题</summary>
+
+如何高效计算出每个二进制位经过所有门后的最终值？
+
 </details>
 
 <details>
-<summary>答案</summary>
+<summary>Hint 4 答案</summary>
 
 我们可以从高位到低位（或反过来）统一处理：  
 对于第 $i$ 位，设 $t=0$ 和 $t=1$ 两个数，它们的其他位均为 $0$，然后依次经过 $n$ 扇门。  
@@ -86,11 +98,14 @@
 ## Hint 5
 
 <details>
-<summary>贪心时，初始攻击力不能超过 $m$，具体怎么控制？</summary>
+<summary>Hint 5 问题</summary>
+
+贪心时，初始攻击力不能超过 $m$，具体怎么控制？
+
 </details>
 
 <details>
-<summary>答案</summary>
+<summary>Hint 5 答案</summary>
 
 维护一个变量 `cur = 0` 表示当前已经确定的初始值大小。  
 从高到低位枚举：  
@@ -107,11 +122,14 @@
 ## Hint 6
 
 <details>
-<summary>为什么从高位开始贪心是正确的？会不会因为低位选择而影响高位？</summary>
+<summary>Hint 6 问题</summary>
+
+为什么从高位开始贪心是正确的？会不会因为低位选择而影响高位？
+
 </details>
 
 <details>
-<summary>答案</summary>
+<summary>Hint 6 答案</summary>
 
 因为高位决策独立于低位。  
 即便我们为了凑低位而修改了高位，一旦高位变成 $0$，损失的伤害永远无法由低位弥补（$2^i > \sum_{j=0}^{i-1}2^j$）。  
@@ -185,22 +203,28 @@ cout << damage << endl;
 ## 思考题
 
 <details>
-<summary>Q1. 如果运算不仅有 `AND,OR,XOR`，还加入了 `NOT`（只有操作数，没有参数），按位独立的性质还成立吗？贪心策略是否需要调整？</summary>
+<summary>Q1 问题</summary>
+
+如果运算不仅有 `AND,OR,XOR`，还加入了 `NOT`（只有操作数，没有参数），按位独立的性质还成立吗？贪心策略是否需要调整？
+
 </details>
 
 <details>
-<summary>参考答案</summary>
+<summary>Q1 答案</summary>
 
 `NOT` 同样是按位取反，一位的输入只影响该位的输出，因此独立性依然成立。贪心策略不变，只需要在模拟时增加 `NOT` 的处理：`ans = !ans`。
 
 </details>
 
 <details>
-<summary>Q2. 为什么代码中 `ans1 = ans0` 这样的赋值能够正确模拟 `AND 0`？这背后的逻辑是什么？</summary>
+<summary>Q2 问题</summary>
+
+为什么代码中 `ans1 = ans0` 这样的赋值能够正确模拟 `AND 0`？这背后的逻辑是什么？
+
 </details>
 
 <details>
-<summary>参考答案</summary>
+<summary>Q2 答案</summary>
 
 当参数在该位为 $0$ 时，`AND 0` 一定得到 $0$，**无论输入是 $0$ 还是 $1$**。  
 因此 `ans0`（输入 $0$ 的结果）和 `ans1`（输入 $1$ 的结果）此时都等于最终为 $0$ 时对应的那个状态。代码中用 `ans1 = ans0` 是把两者统一为原来输入 $0$ 的结果（因为 `ans0` 刚好就是经过 `AND 0` 后的值——原来输入 $0$ 经 `AND 0` 得 $0$，输入 $1$ 也得 $0$）。  
@@ -209,11 +233,14 @@ cout << damage << endl;
 </details>
 
 <details>
-<summary>Q3. 如果 $m$ 很大（比如 $10^{18}$），但门的参数范围也相应扩大，算法是否需要修改？本题的 $m=10^9$ 下为何只枚举到 $30$ 位？</summary>
+<summary>Q3 问题</summary>
+
+如果 $m$ 很大（比如 $10^{18}$），但门的参数范围也相应扩大，算法是否需要修改？本题的 $m=10^9$ 下为何只枚举到 $30$ 位？
+
 </details>
 
 <details>
-<summary>参考答案</summary>
+<summary>Q3 答案</summary>
 
 题目中参数 $t$ 以及 $m$ 都不超过 $10^9$，$10^9 < 2^{30}$，因此 $30$ 位（$0\sim 30$）足够覆盖所有可能。如果 $m$ 更大，只需枚举更多位（如 $0\sim 60$），算法框架不变。
 
@@ -224,11 +251,14 @@ cout << damage << endl;
 ## 启示
 
 <details>
-<summary>从本题可以学到什么？</summary>
+<summary>启示 问题</summary>
+
+从本题可以学到什么？
+
 </details>
 
 <details>
-<summary>答案</summary>
+<summary>启示 答案</summary>
 
 - **位运算独立性**：`AND/OR/XOR` 等按位操作天然可以让问题降维，把一个大整数问题分解为若干独立的布尔问题。
 - **高位优先贪心**：在二进制权值差距极大的场景下，从高位贪心既能保证最优解，又能大幅降低复杂度。
